@@ -17,4 +17,4 @@ A memory matching game written in PyGame.
 
 - [ ] Multiple versions of images (image sets)
 
-- [ ] Create GitHub repo
+- [X] Create GitHub repo
