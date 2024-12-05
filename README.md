@@ -3,7 +3,7 @@ A memory matching game written in PyGame.
 
 ## TODO:
 
-- [X] Figure out who is our leader -- Day
+- [X] Figure out who is our leader -- Day (McKinstry is Project Manager)
 
 - [ ] Task: make a memory game in pygame (due Monday)
   - [ ] Select from multiple image sets
