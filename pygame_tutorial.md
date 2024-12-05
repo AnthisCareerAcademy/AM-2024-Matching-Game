@@ -4,7 +4,7 @@
 
 To install PyGame, open the local terminal in a new PyCharm project.
 
-![Press Alt+F12 to open the terminal](https://github.com/user-attachments/assets/31c718aa-3ff4-4735-9a0c-e8f59607e73c)
+![Press Alt+F12 to open the terminal](https://github.com/user-attachments/assets/53d80b17-9776-4b92-9302-a252d31c8338)
 
 Inside the terminal, type `pip install pygame`.
 
