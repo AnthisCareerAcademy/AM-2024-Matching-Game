@@ -1,1 +1,0 @@
-To install PyGame, add "import pygame" to the top of the file.
