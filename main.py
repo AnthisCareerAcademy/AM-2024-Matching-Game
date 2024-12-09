@@ -115,6 +115,9 @@ while running:
                     cards_flipped[1].flipping = True
                 cards_flipped.clear()
 
+
+        # possible fix: if not matched and not in cards_flipped BEFORE APPEND CALL
+
         # Draw and update the card.
         card.update()
         card.draw(screen)
