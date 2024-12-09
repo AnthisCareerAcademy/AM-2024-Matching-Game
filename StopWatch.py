@@ -2,23 +2,45 @@ import pygame
 import pygame.freetype
 import pygame.locals import *
 
-def main():
-    pygame.init()
-    screen=pygame.display.set_mode((400, 300))
-    clock=pygame.time.Clock()
-    font=pygame.freetype.SysFont(None, 34)
-    font.origin=True
-    while True:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT: return
-        screen.fill(pygame.Color(200,215,230))
-        ticks=pygame.time.get_ticks()
-        millis=ticks%1000
-        seconds=int(ticks/1000 % 60)
-        minutes=int(ticks/60000 % 24)
-        out='{minutes:02d}:{seconds:02d}:{millis}'.format(minutes=minutes, millis=millis, seconds=seconds)
-        font.render_to(screen, (100, 100), out, pygame.Color('DarkBlue'))
-        pygame.display.flip()
-        clock.tick(60)
+# Initialize pygame
+pygame.init()
 
-if __name__ == '__main__': main()
+# Set up the screen and font
+screen = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
+pygame.display.set_caption("Stopwatch")
+
+font = pygame.freetype.SysFont(None, 24)
+font.origin = True
+
+# Function to display the timer
+def display_timer(ticks):
+    millis = ticks % 1000
+    seconds = int(ticks / 1000 % 60)
+    minutes = int(ticks / 60000 % 60)
+    timer_text = f"{minutes:02d}:{seconds:02d}:{millis}"
+    text = font.render(timer_text, True, (255, 255, 255))
+    screen.blit(text, (10, 10))
+
+# Main stopwatch loop (this can be imported and run in the main game)
+def run_timer():
+    running = True
+    start_ticks = pygame.time.get_ticks()  # Start time
+    while running:
+        screen.fill((200, 215, 230))  # Background color
+
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                running = False
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        # Timer logic
+        ticks = pygame.time.get_ticks() - start_ticks  # Elapsed time in milliseconds
+        display_timer(ticks)
+
+        pygame.display.update()
+        pygame.time.Clock().tick(60)  # Run at 60 FPS
+
+    pygame.quit()
