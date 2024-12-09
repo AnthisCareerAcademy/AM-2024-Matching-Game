@@ -1,5 +1,6 @@
 import pygame
 import pygame.freetype
+import pygame.locals import *
 
 def main():
     pygame.init()
