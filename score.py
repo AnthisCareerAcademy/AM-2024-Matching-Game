@@ -11,11 +11,10 @@ top_scores = [
     {"name": "melody", "time": 95},
 ]
 
-# Example score
-top_scores = sorted(top_scores, key=lambda x: x['time'])[:3]  # Top 3 scores
-
-# Pygame display setup
+# Display setup
 screen = pygame.display.set_mode((800, 800), pygame.RESIZABLE)
+pygame.display.set_caption("Top Scores")
+
 font = pygame.freetype.SysFont(None, 24)
 font.origin = True
 
@@ -28,21 +27,11 @@ def display_scores():
         screen.blit(text, (screen.get_width()-200, y_offset))
         y_offset += 30
 
-# Main game loop
-running = True
-while running:
-    screen.fill((0, 0, 0))
-    display_scores()
-    pygame.display.update()
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-# Function to display the timer
-def display_timer(ticks):
-    millis = ticks % 100
-
+# Function to update the top scores
+def update_top_scores(name, time):
+    top_scores.append({"name": name, "time": time}) # Add the new score
+    top_scores.sort(key=lambda x:x['time']) # Sort and keep top 3 scores
+    top_scores[:] = top_scores[:3] 
 
 
 
