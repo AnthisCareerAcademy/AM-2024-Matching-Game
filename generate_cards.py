@@ -29,6 +29,33 @@ def generate_cards(screen_w, screen_h, card_set):
                         "images/card_back.png"
                     ))
 
+                case "lettersAH":
+                    letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
+                    cards.append(MatchCard(
+                        i + (j % 2 * 4), 30 + i*(card_size + 10),
+                        80 + j*(card_size + 10), card_size, card_size,
+                        f"images/alphabet-{letters[i+(j%2 * 4)+1]}.jpg",
+                        "images/card_back.png"
+                    ))
+
+                case "lettersIP":
+                    letters = ["i", "j", "k", "l", "m", "n", "o", "p"]
+                    cards.append(MatchCard(
+                        i + (j % 2 * 4), 30 + i * (card_size + 10),
+                        80 + j * (card_size + 10), card_size, card_size,
+                        f"images/alphabet-{letters[i + (j % 2 * 4) + 1]}.jpg",
+                        "images/card_back.png"
+                    ))
+
+                case "lettersQX":
+                    letters = ["q", "r", "s", "t", "u", "v", "w", "x"]
+                    cards.append(MatchCard(
+                        i + (j % 2 * 4), 30 + i * (card_size + 10),
+                        80 + j * (card_size + 10), card_size, card_size,
+                        f"images/alphabet-{letters[i + (j % 2 * 4) + 1]}.jpg",
+                        "images/card_back.png"
+                    ))
+
                 case _:
                     cards.append(MatchCard(
                         i + (j % 2 * 4), 30 + i * (card_size + 10),
