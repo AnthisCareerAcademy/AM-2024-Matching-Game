@@ -1,6 +1,7 @@
 from match_card import MatchCard
 import pygame
 from pygame.locals import *
+from random import shuffle
 
 pygame.font.init()
 pygame.init()
@@ -19,6 +20,10 @@ screen = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
 fullscreen = False
 running = True
 
+matches = 0
+out = ""
+
+# Card generation code.
 card_w = (screen.get_width() - 30) * 0.75
 card_h = (screen.get_height() - 80) * 0.75
 
@@ -28,18 +33,19 @@ card_size = int(min(card_w // 4, card_h // 4))
 cards = []
 
 cards_flipped = []
-matches = 0
-
-out = ""
 
 for i in range(4):
     for j in range(4):
         cards.append(MatchCard(
             i + (j % 2 * 4), 30 + i*(card_size + 10), 80 + j*(card_size + 10),
-            card_size, card_size, "images/card_back.png",
-            f"images/memory-balls-{i+1}.png"
+            card_size, card_size, f"images/memory-balls-{i+(j%2 * 4)+1}.jpg",
+            "images/card_back.png"
         ))
 
+
+shuffle(cards)
+
+# End card generation code.
 
 # Code to make the window fullscreen.
 while running:
@@ -74,7 +80,10 @@ while running:
         ticks = pygame.time.get_ticks()
 
         seconds = int(ticks / 1000 % 60)
-        out = font.render(f'{seconds:02d}', True, pygame.Color('DarkBlue'))
+        minutes = int(ticks / 1000 // 60)
+        out = font.render(f'{minutes:02d}:{seconds:02d}', True,
+            pygame.Color('DarkBlue')
+        )
         screen.blit(out, (30, 30))
     else:
         screen.blit(out, (30, 30))
@@ -92,31 +101,30 @@ while running:
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        if (card.x < mouse_x < card.x + card.w and
-                card.y < mouse_y < card.y + card.h and
-                pygame.mouse.get_pressed()[0] and not card.face_up and
-                card not in cards_flipped):
-            card.flipping = True
+        if len(cards_flipped) == 2:
+            result = cards_flipped[0].check_match(cards_flipped[1])
+            print(f"[{cards_flipped[0]}, {cards_flipped[1]}")
+            print(result)
 
-            if len(cards_flipped) < 2:
-                cards_flipped.append(card)
-
+            if result:
+                cards_flipped[0].matched = True
+                cards_flipped[1].matched = True
+                matches += 1
             else:
-                result = cards_flipped[0].check_match(cards_flipped[1])
-                print(f"[{cards_flipped[0]}, {cards_flipped[1]}")
-                print(result)
+                cards_flipped[0].angle = 180
+                cards_flipped[1].angle = 180
+                cards_flipped[0].flipping = True
+                cards_flipped[1].flipping = True
+            cards_flipped.clear()
 
-                if result:
-                    cards_flipped[0].matched = True
-                    cards_flipped[1].matched = True
-                    matches += 1
-                else:
-                    cards_flipped[0].flipping = True
-                    cards_flipped[1].flipping = True
-                cards_flipped.clear()
+        if pygame.mouse.get_pressed()[0]:
+            if (card.x < mouse_x < card.x + card.w and
+                    card.y < mouse_y < card.y + card.h and
+                    not card.matched and card not in cards_flipped):
 
-
-        # possible fix: if not matched and not in cards_flipped BEFORE APPEND CALL
+                if len(cards_flipped) < 2:
+                    card.flipping = True
+                    cards_flipped.append(card)
 
         # Draw and update the card.
         card.update()
