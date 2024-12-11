@@ -24,21 +24,21 @@ choosing = True
 matches = 0
 seconds, minutes = 0, 0
 
-screen.fill((200, 215, 230))
 font = pygame.font.SysFont('Arial', 34)
 
 while choosing:
+    screen.fill((200, 215, 230))
     choosing = False
     # TODO: implement set choosing here
     pygame.display.update()
-    
+
 
 cards = generate_cards(screen.get_width(), screen.get_height(), "numbers")
 
 cards_flipped = []
 
-# Code to make the window fullscreen.
 while running:
+    screen.fill((200, 215, 230))
 
     # Event cases.
     for event in pygame.event.get():
@@ -82,6 +82,9 @@ while running:
             out = font.render(f'{minutes}:{seconds:02d}', True,
                 pygame.Color('DarkBlue')
             )
+            
+            # TODO: Trophy and reset code here
+            
         screen.blit(out, (30, 30))
 
 
