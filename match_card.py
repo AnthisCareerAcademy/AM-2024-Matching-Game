@@ -46,6 +46,15 @@ class MatchCard:
         self.draw_back = pygame.transform.scale(self.back, (self.w, self.h))
         self.back_rect = (self.x + self.w/2, self.y - self.h/2)
 
+    def __str__(self):
+        """
+        Represent the card in a readable way.
+
+        :return: Returns a string with the card id, etc.
+        """
+        return (f"Match card. Value: {self.value}. Face-up: {self.face_up}. "
+                f"Matched: {self.matched}.")
+
     def draw(self, screen):
         """
         Draw the card image on the screen.
@@ -57,24 +66,22 @@ class MatchCard:
         else:
             screen.blit(self.draw_back, self.back_rect)
 
-    def update(self, other_card = None):
+    def update(self):
         """
-        Flip the card when clicked and check for matches.
-
-        :param other_card: The other card that has been flipped, to check for
-            matches.
+        Flip the card when clicked.
 
         :return: Flips the card with a nice animation. If the card matches the
             other card, then it remains face-up and returns True.
         """
+        size = (abs(math.cos(self.angle * math.pi / 180) * self.w), self.h)
+
+        self.image_rect = (self.x + self.w / 2 - size[0] / 2, self.y)
+        self.back_rect = (self.x + self.w / 2 - size[0] / 2, self.y)
+
+        self.draw_image = pygame.transform.scale(self.image, size)
+        self.draw_back = pygame.transform.scale(self.back, size)
+
         if not self.matched:
-            size = (abs(math.cos(self.angle*math.pi/180)*self.w), self.h)
-
-            self.image_rect = (self.x + self.w/2 - size[0]/2, self.y)
-            self.back_rect = (self.x + self.w/2 - size[0]/2, self.y)
-
-            self.draw_image = pygame.transform.scale(self.image, size)
-            self.draw_back = pygame.transform.scale(self.back, size)
 
             if self.angle % 180 == 90:
                 self.face_up = not self.face_up
@@ -90,13 +97,19 @@ class MatchCard:
 
             self.angle %= 180
 
-            if other_card and other_card.value == self.value:
-                self.matched = True
-                return True
-            else:
-                self.flipping = True
-                other_card.flipping = True
-                return False
         else:
             self.angle = 0
             self.flipping = False
+
+    def check_match(self, other_card):
+        """
+        Check for a match between two cards.
+
+        :param other_card: Other card that's flipped.
+
+        :return: Return True if the cards match, False otherwise.
+        """
+        if other_card.value == self.value:
+            return True
+        else:
+            return False
